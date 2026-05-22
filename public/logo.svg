@@ -1,0 +1,14 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 추상적 문양 (로고 엠블럼) -->
+  <circle cx="100" cy="50" r="15" fill="#FFD700" stroke="black" stroke-width="2"/>
+  <path d="M70 80 L100 65 L130 80 L140 110 L100 130 L60 110 Z" fill="white" stroke="black" stroke-width="2"/>
+  <path d="M100 65 L70 80 L80 100 L100 90 Z" fill="#FFD700" stroke="black" stroke-width="1.5"/>
+  <path d="M100 65 L130 80 L120 100 L100 90 Z" fill="#9370DB" stroke="black" stroke-width="1.5"/>
+  <path d="M70 80 L60 110 L80 100 Z" fill="#A2CD5A" stroke="black" stroke-width="1.5"/>
+  <path d="M130 80 L140 110 L120 100 Z" fill="#FFB6C1" stroke="black" stroke-width="1.5"/>
+  
+  <!-- 텍스트: 산위의 학교 -->
+  <text x="100" y="165" font-family="Pretendard, sans-serif" font-size="24" font-weight="900" text-anchor="middle" fill="black">산위의 학교</text>
+  <!-- 텍스트: KOH SCHOOL -->
+  <text x="100" y="185" font-family="Montserrat, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="black" letter-spacing="0.2em">KOH SCHOOL</text>
+</svg>

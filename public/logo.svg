@@ -1,9 +1,23 @@
-<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 문양 아이콘만 유지 -->
-  <circle cx="50" cy="20" r="10" fill="#FFD700" stroke="black" stroke-width="1.5"/>
-  <path d="M50 30 L30 40 L35 55 L50 48 L65 55 L70 40 Z" fill="white" stroke="black" stroke-width="1.5"/>
-  <path d="M50 30 L30 40 L40 50 L50 45 Z" fill="#FFD700" stroke="black" stroke-width="1"/>
-  <path d="M50 30 L70 40 L60 50 L50 45 Z" fill="#9370DB" stroke="black" stroke-width="1"/>
-  <path d="M30 40 L25 60 L40 50 Z" fill="#A2CD5A" stroke="black" stroke-width="1"/>
-  <path d="M70 40 L75 60 L60 50 Z" fill="#FFB6C1" stroke="black" stroke-width="1"/>
+<svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 상단 로고 이미지 부분 -->
+  <g transform="translate(50, 10)">
+    <!-- 가운데 노란색 인형/별 모양 -->
+    <path d="M48 5C45 5 43 8 43 12C43 14 44 16 46 17 L30 35 L40 75 L50 65 L60 75 L70 35 L54 17C56 16 57 14 57 12C57 8 55 5 52 5H48Z" fill="#FFD700" stroke="black" stroke-width="2.5" stroke-linejoin="round"/>
+    
+    <!-- 왼쪽 연두색 날개/배경 (빗금 패턴 느낌) -->
+    <path d="M25 20 L5 55 L32 45 Z" fill="#A2CD5A" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M22 28 L8 50" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+    
+    <!-- 오른쪽 보라색 날개/배경 -->
+    <path d="M75 20 L95 55 L68 45 Z" fill="#9370DB" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M78 28 L92 50" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+    
+    <!-- 하단 핑크색 배경 -->
+    <path d="M35 78 L50 95 L65 78 Z" fill="#FFB6C1" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M42 85 L58 85" stroke="black" stroke-width="1" stroke-linecap="round"/>
+  </g>
+
+  <!-- 하단 텍스트 부분 (이미지 안에 포함) -->
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="28" fill="black">산위의 학교</text>
+  <text x="100" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="14" letter-spacing="0.3em" fill="black">KOH SCHOOL</text>
 </svg>

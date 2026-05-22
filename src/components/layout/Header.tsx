@@ -9,12 +9,11 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
         
-        {/* LOGO 영역: 아이콘(좌) + 텍스트(우) */}
-        <Link href="/" className="flex items-center gap-5">
-          {/* 아이콘 크기를 더 키웠습니다 (w-20 h-20) */}
-          <div className="relative w-20 h-20 flex-shrink-0">
+        {/* LOGO 영역: 사진처럼 그림+글씨가 합쳐진 로고 하나만 왼쪽 배치 */}
+        <Link href="/" className="flex items-center">
+          <div className="relative w-28 h-28 flex-shrink-0">
             <Image 
               src="/logo.svg" 
               alt="산위의 학교 로고" 
@@ -23,19 +22,9 @@ export default function Header() {
               priority 
             />
           </div>
-          
-          {/* 텍스트 배치: 한글은 크게, 영어는 작게 밑으로 */}
-          <div className="flex flex-col justify-center">
-            <h1 className="text-3xl font-black text-gray-900 tracking-tighter leading-none mb-1.5">
-              산위의 학교
-            </h1>
-            <p className="text-sm font-bold text-gray-400 tracking-[0.25em] uppercase pl-1">
-              KOH SCHOOL
-            </p>
-          </div>
         </Link>
 
-        {/* 네비게이션: 섹션으로 이동하도록 수정됨 */}
+        {/* 네비게이션 */}
         <nav className="hidden lg:flex gap-12 text-sm font-bold text-gray-500 uppercase tracking-widest">
           <Link href="#about" className="hover:text-koahYellow transition-colors">About</Link>
           <Link href="#classes" className="hover:text-koahYellow transition-colors">Classes</Link>

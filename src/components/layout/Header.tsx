@@ -1,3 +1,4 @@
+// src/components/layout/Header.tsx
 'use client'
 
 import { useState } from 'react'
@@ -100,15 +101,25 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
       </div>
 
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold">
-          <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-          <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
-          <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
-          <hr />
-          <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
-            {t.band} →
-          </a>
-        </div>
+        <>
+          {/* overlay: 페이지 본문을 덮어 터치/클릭을 잡아서 메뉴 닫기 */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* 메뉴 패널은 overlay보다 위에 있어야 하므로 z-50 유지 */}
+          <div className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold z-50">
+            <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
+            <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
+            <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+            <hr />
+            <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
+              {t.band} →
+            </a>
+          </div>
+        </>
       )}
     </header>
   )

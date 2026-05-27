@@ -18,7 +18,7 @@ export default function About({ lang = 'ko' }: { lang?: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className="py-20 bg-white scroll-mt-28">
       <div className="max-w-7xl mx-auto px-6 md:flex md:items-center md:gap-12">
         <div className="md:w-1/2 mb-8 md:mb-0">
           <h2 className="text-3xl font-black mb-4">{t.title}</h2>

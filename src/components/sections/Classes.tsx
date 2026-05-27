@@ -22,7 +22,7 @@ export default function Classes({ lang = 'ko' }: { lang?: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
-    <section id="classes" className="py-20 bg-gray-50">
+    <section id="classes" className="py-20 bg-gray-50 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl font-black mb-6">{t.title}</h2>
         <ul className="space-y-3 text-gray-700">

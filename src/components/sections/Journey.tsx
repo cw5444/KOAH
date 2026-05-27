@@ -20,7 +20,7 @@ export default function Journey({ lang = 'ko' }: { lang?: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko;
 
   return (
-    <section id="journey" className="relative h-[120vh]">
+    <section id="journey" className="relative h-[120vh] scroll-mt-28">
       <div className="sticky top-0 h-[60vh] w-full relative overflow-hidden">
         <Image 
           src="/gotogether.jpg" 

@@ -36,13 +36,53 @@ export default function GalleryClient({
       })
       .then((json) => {
         if (!mounted) return
-        const list: ImgItem[] = json[category] ?? []
+
+        // Normalize json keys -> merge exhibition-related keys into a single list
+        const makeListFrom = (keys: string[]) => {
+          const seen = new Set<string>()
+          const out: ImgItem[] = []
+          for (const k of keys) {
+            const arr = json[k] ?? []
+            if (!Array.isArray(arr)) continue
+            for (const it of arr) {
+              if (!it || typeof it.file !== 'string') continue
+              if (!seen.has(it.file)) {
+                seen.add(it.file)
+                out.push(it as ImgItem)
+              }
+            }
+          }
+          return out
+        }
+
+        let list: ImgItem[] = []
+        if (category === 'exhibitions') {
+          // gather keys that look like exhibitions / display / exhibit / 전시 등
+          const allKeys = Object.keys(json)
+          const exhibitKeys = allKeys.filter((k) =>
+            /exhibit|display|전시|전시\s?디스플레이|디스플레이|exhibit-photos|exhibit_photos|exhibit_photos/i.test(k)
+          )
+          // make sure 'exhibitions' (if present) is included first
+          if (json['exhibitions'] && !exhibitKeys.includes('exhibitions')) exhibitKeys.unshift('exhibitions')
+          // if no exhibit-like keys found, fallback to 'exhibitions' or the default category key
+          if (exhibitKeys.length === 0) {
+            if (Array.isArray(json['exhibitions'])) list = makeListFrom(['exhibitions'])
+            else list = json[category] ?? []
+          } else {
+            list = makeListFrom(exhibitKeys)
+          }
+        } else {
+          // default behavior for other categories
+          list = json[category] ?? []
+        }
+
         setItems(list)
       })
       .catch((err) => {
         console.error(err)
         setItems([])
       })
+
     return () => {
       mounted = false
     }
@@ -108,8 +148,8 @@ export default function GalleryClient({
   const categorize = (it: ImgItem) => {
     const text = (it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? '')).toLowerCase()
     if (/(?:\bart-|\b미술|\b미술작품|artwork)/i.test(text)) return 'art'
-    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit)/i.test(text)) return 'exhibition'
-    if (/(?:독서|reading|book|읽기)/i.test(text)) return 'reading'
+    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit|exhibit-photos|exhibit_photos)/i.test(text)) return 'exhibition'
+    if (/(?:독서|reading|book|읽기|booklog|mindmap)/i.test(text)) return 'reading'
     return 'other'
   }
 

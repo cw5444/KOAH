@@ -14,30 +14,17 @@
     }
   ],
   "exhibitions": [
-    {
-      "file": "/images/exhibitions/art-01.webp",
-      "alt": "학생 작품 1",
-      "caption": "학생 작품"
-    },
-    {
-      "file": "/images/exhibitions/art-02.webp",
-      "alt": "학생 작품 2",
-      "caption": "학생 작품"
-    },
-    {
-      "file": "/images/exhibitions/palm-tree-exhibit.webp",
-      "alt": "종려나무 전시",
-      "caption": "종려나무"
-    },
-    {
-      "file": "/images/exhibitions/secret-reading-club.webp",
-      "alt": "비밀독서단 게시물",
-      "caption": "비밀독서단"
-    },
-    {
-      "file": "/images/exhibitions/mindmap.webp",
-      "alt": "독서 활동 마인드맵",
-      "caption": "독서 활동"
-    }
+    { "file": "/images/exhibitions/art-01.webp", "alt": "학생 작품 1", "caption": "학생 작품" },
+    { "file": "/images/exhibitions/art-02.webp", "alt": "학생 작품 2", "caption": "학생 작품" },
+    { "file": "/images/exhibitions/art-03.webp", "alt": "학생 작품 3", "caption": "학생 작품" },
+    { "file": "/images/exhibitions/art-04.webp", "alt": "학생 작품 4", "caption": "학생 작품" },
+    { "file": "/images/exhibitions/art-05.webp", "alt": "학생 작품 5", "caption": "학생 작품" },
+    { "file": "/images/exhibitions/mindmap.webp", "alt": "독서 활동 마인드맵", "caption": "독서 활동" },
+    { "file": "/images/exhibitions/olive-display.webp", "alt": "전시 디스플레이", "caption": "전시 디스플레이" },
+    { "file": "/images/exhibitions/palm-tree-exhibit.webp", "alt": "종려나무 전시", "caption": "종려나무" },
+    { "file": "/images/exhibitions/reading-activities.webp", "alt": "읽기 활동 게시물", "caption": "읽기 활동" },
+    { "file": "/images/exhibitions/rothem-01.webp", "alt": "전시 게시물", "caption": "전시" },
+    { "file": "/images/exhibitions/rothem-02.webp", "alt": "전시 게시물", "caption": "전시" },
+    { "file": "/images/exhibitions/secret-reading-club.webp", "alt": "비밀독서단 게시물", "caption": "비밀독서단" }
   ]
 }

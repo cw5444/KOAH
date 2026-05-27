@@ -2,43 +2,51 @@
 
 import Image from 'next/image'
 
-export default function Journey() {
+export default function Journey({ lang }: { lang: string }) {
+  const content = {
+    ko: {
+      title: "고투게더 (Go-Together)",
+      sub: "함께 걷고, 함께 배우며, 함께 성장합니다.",
+      card1: "동행의 시작",
+      card2: "성장의 결실"
+    },
+    en: {
+      title: "Go-Together",
+      sub: "Walking together, learning together, growing together.",
+      card1: "Starting Together",
+      card2: "Fruit of Growth"
+    }
+  }
+  const t = content[lang as 'ko' | 'en'] || content.ko;
+
   return (
-    <section id="journey" className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-black mb-4 uppercase tracking-tight">Our Journey</h2>
-          <p className="text-gray-500">산위의 학교가 함께 걸어온 성장의 기록들입니다.</p>
+    <section id="journey" className="relative h-[120vh]"> {/* 높이를 충분히 줌 */}
+      {/* 고투게더 대형 배경 (상단) */}
+      <div className="sticky top-0 h-[60vh] w-full relative overflow-hidden">
+        <Image 
+          src="/gotogether.jpg" 
+          alt="Go-Together" 
+          fill 
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center p-6">
+          <h2 className="text-4xl md:text-6xl font-black mb-4">{t.title}</h2>
+          <p className="text-xl md:text-2xl font-light opacity-90">{t.sub}</p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* 첫 번째 카드: 함께하는 여정 */}
-          <div className="group relative h-[400px] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-            <Image 
-              src="/gotogether.jpg" 
-              alt="함께하는 여정" 
-              fill 
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 text-white">
-              <h3 className="text-2xl font-bold mb-2">Together</h3>
-              <p className="opacity-80">서로 격려하며 함께 걷는 소중한 시간들</p>
+      {/* 졸업 사진이 겹쳐지는 영역 (하단) */}
+      <div className="relative h-[60vh] w-full overflow-hidden bg-black">
+        <Image 
+          src="/graduate.jpg" 
+          alt="Graduate" 
+          fill 
+          className="object-cover opacity-70"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+            <div className="border-4 border-white/30 p-8 md:p-12">
+                <p className="text-white text-3xl md:text-5xl font-black">{t.card2}</p>
             </div>
-          </div>
-
-          {/* 두 번째 카드: 졸업 및 결실 */}
-          <div className="group relative h-[400px] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-            <Image 
-              src="/graduate.jpg" 
-              alt="졸업과 새로운 시작" 
-              fill 
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-8 text-white">
-              <h3 className="text-2xl font-bold mb-2">Growth</h3>
-              <p className="opacity-80">배움을 마치고 더 넓은 세상으로 나아가는 순간</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

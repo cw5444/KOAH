@@ -4,9 +4,21 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Header() {
-  const [lang, setLang] = useState('ko')
+interface HeaderProps {
+  lang?: string
+  setLang?: (lang: string) => void
+}
+
+export default function Header({ lang: propLang, setLang: propSetLang }: HeaderProps) {
+  // 내부 상태는 여전히 유지하지만, 부모에서 prop으로 전달하면 그걸 우선 사용합니다.
+  const [internalLang, setInternalLang] = useState('ko')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const lang = propLang ?? internalLang
+  const setLang = (value: string) => {
+    if (propSetLang) propSetLang(value)
+    else setInternalLang(value)
+  }
 
   // 언어별 텍스트 데이터
   const content = {
@@ -24,8 +36,8 @@ export default function Header() {
     }
   }
 
-  // 현재 언어에 맞는 텍스트 선택 (타입 안정성을 위해 'ko'를 기본값으로 사용)
-  const t = content[lang as 'ko' | 'en'];
+  // 현재 언어에 맞는 텍스트 선택 (타입 안전성 위해 'ko' 기본값)
+  const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">

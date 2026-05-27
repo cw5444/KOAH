@@ -8,17 +8,17 @@ import Sports from '@/components/sections/Sports'
 import Journey from '@/components/sections/Journey'
 import Contact from '@/components/sections/Contact'
 
-export default function HomePage() {
+export default function HomePage({ lang = 'ko' }: { lang?: string }) {
   return (
     <>
       {/* Header는 layout -> RootWrapper에서 렌더됩니다 */}
-      <Hero />
-      <About />
-      <Classes />
-      <Curriculum />
-      <Sports />
-      <Journey />
-      <Contact />
+      <Hero lang={lang} />
+      <About lang={lang} />
+      <Classes lang={lang} />
+      <Curriculum lang={lang} />
+      <Sports lang={lang} />
+      <Journey lang={lang} />
+      <Contact lang={lang} />
     </>
   )
 }

@@ -1,5 +1,4 @@
-// src/components/GalleryClient.tsx
-'use client'
+﻿"use client"
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -29,59 +28,72 @@ export default function GalleryClient({
 
   useEffect(() => {
     let mounted = true
-    fetch('/images/gallery.json')
-      .then((r) => {
-        if (!r.ok) throw new Error('gallery.json fetch failed: ' + r.status)
-        return r.json()
-      })
-      .then((json) => {
-        if (!mounted) return
 
-        // Normalize json keys -> merge exhibition-related keys into a single list
-        const makeListFrom = (keys: string[]) => {
-          const seen = new Set<string>()
-          const out: ImgItem[] = []
-          for (const k of keys) {
-            const arr = json[k] ?? []
-            if (!Array.isArray(arr)) continue
-            for (const it of arr) {
-              if (!it || typeof it.file !== 'string') continue
-              if (!seen.has(it.file)) {
-                seen.add(it.file)
-                out.push(it as ImgItem)
-              }
-            }
+    async function loadGallery() {
+      try {
+        const res = await fetch('/images/gallery.json')
+        if (!res.ok) throw new Error('gallery.json fetch failed: ' + res.status)
+        const json = await res.json()
+
+        // 확장 가능한 '전시' 관련 키 탐지 정규식(필요시 키 추가)
+        const exhibitKeyRegex = /exhibit|display|전시|exhibitions|exhibit-photos|exhibit_photos/i
+
+        const allKeys = Object.keys(json || {})
+        const exhibitKeys = allKeys.filter((k) => exhibitKeyRegex.test(k))
+        // ensure 'exhibitions' appears first if present
+        if (json['exhibitions'] && !exhibitKeys.includes('exhibitions')) exhibitKeys.unshift('exhibitions')
+
+        const otherKeys = allKeys.filter((k) => !exhibitKeys.includes(k))
+
+        const merged: ImgItem[] = []
+        const seen = new Set<string>()
+
+        const addList = (list?: any[]) => {
+          if (!Array.isArray(list)) return
+          for (const item of list) {
+            const file = item?.file || item?.src || item?.path
+            if (!file || typeof file !== 'string') continue
+            if (seen.has(file)) continue
+            seen.add(file)
+            merged.push(item as ImgItem)
           }
-          return out
         }
 
         let list: ImgItem[] = []
+
         if (category === 'exhibitions') {
-          // gather keys that look like exhibitions / display / exhibit / 전시 등
-          const allKeys = Object.keys(json)
-          const exhibitKeys = allKeys.filter((k) =>
-            /exhibit|display|전시|전시\s?디스플레이|디스플레이|exhibit-photos|exhibit_photos|exhibit_photos/i.test(k)
-          )
-          // make sure 'exhibitions' (if present) is included first
-          if (json['exhibitions'] && !exhibitKeys.includes('exhibitions')) exhibitKeys.unshift('exhibitions')
-          // if no exhibit-like keys found, fallback to 'exhibitions' or the default category key
           if (exhibitKeys.length === 0) {
-            if (Array.isArray(json['exhibitions'])) list = makeListFrom(['exhibitions'])
-            else list = json[category] ?? []
+            // fallback: try the category key or empty array
+            if (Array.isArray(json['exhibitions'])) {
+              list = json['exhibitions']
+            } else {
+              list = (json[category] && Array.isArray(json[category]) ? json[category] : [])
+            }
           } else {
-            list = makeListFrom(exhibitKeys)
+            // add all exhibit-like keys first, then others
+            for (const k of exhibitKeys) addList(json[k])
+            for (const k of otherKeys) addList(json[k])
+            list = merged
           }
         } else {
-          // default behavior for other categories
-          list = json[category] ?? []
+          // non-exhibition categories: use that key directly (dedupe by file)
+          addList(json[category])
+          // also add other keys except category to preserve previous behavior only if needed
+          for (const k of Object.keys(json || {})) {
+            if (k === category) continue
+            addList(json[k])
+          }
+          list = merged.length ? merged : (Array.isArray(json[category]) ? json[category] : [])
         }
 
-        setItems(list)
-      })
-      .catch((err) => {
+        if (mounted) setItems(list)
+      } catch (err) {
         console.error(err)
-        setItems([])
-      })
+        if (mounted) setItems([])
+      }
+    }
+
+    loadGallery()
 
     return () => {
       mounted = false
@@ -148,7 +160,7 @@ export default function GalleryClient({
   const categorize = (it: ImgItem) => {
     const text = (it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? '')).toLowerCase()
     if (/(?:\bart-|\b미술|\b미술작품|artwork)/i.test(text)) return 'art'
-    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit|exhibit-photos|exhibit_photos)/i.test(text)) return 'exhibition'
+    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit-photos|exhibit_photos)/i.test(text)) return 'exhibition'
     if (/(?:독서|reading|book|읽기|booklog|mindmap)/i.test(text)) return 'reading'
     return 'other'
   }

@@ -1,7 +1,7 @@
 // src/components/layout/Header.tsx
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
@@ -14,9 +14,10 @@ interface HeaderProps {
 export default function Header({ lang: propLang, setLang: propSetLang }: HeaderProps) {
   const [internalLang, setInternalLang] = useState<'ko' | 'en'>('ko')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
 
-  // Context 사용 시(정상동작 루트) Context 값을 우선 사용.
-  // 만약 Header가 Provider 밖에서 테스트용으로 쓰이면 prop 또는 내부 상태를 사용하도록 fallback 유지.
+  // Context fallback handling (same as before)
   let ctxLang: 'ko' | 'en' | undefined
   let ctxSetLang: ((l: 'ko' | 'en') => void) | undefined
   try {
@@ -24,7 +25,7 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
     ctxLang = ctx.lang
     ctxSetLang = ctx.setLang
   } catch {
-    // Provider가 없을 경우 useLanguage에서 에러가 발생하므로 무시하고 fallback 사용
+    // Provider가 없으면 무시 (테스팅 등)
   }
 
   const lang = (propLang as 'ko' | 'en') ?? ctxLang ?? internalLang
@@ -36,21 +37,35 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
   }
 
   const content = {
-    ko: {
-      about: '소개',
-      classes: '수업',
-      contact: '문의',
-      band: '산위의 학교 공식밴드'
-    },
-    en: {
-      about: 'About',
-      classes: 'Classes',
-      contact: 'Contact',
-      band: 'Official Band'
-    }
+    ko: { about: '소개', classes: '수업', contact: '문의', band: '산위의 학교 공식밴드' },
+    en: { about: 'About', classes: 'Classes', contact: 'Contact', band: 'Official Band' }
   }
-
   const t = content[lang]
+
+  useEffect(() => {
+    // pointerdown: 터치/클릭 시작 시점에 닫기 (요구사항)
+    function handlePointerDown(ev: PointerEvent) {
+      if (!isMenuOpen) return
+      const target = ev.target as Node | null
+      if (!target) return
+      // 메뉴 내부 또는 메뉴 버튼이면 닫지 않음 (링크 클릭을 방해하지 않기 위함)
+      if (menuRef.current?.contains(target) || buttonRef.current?.contains(target)) return
+      setIsMenuOpen(false)
+    }
+
+    // Escape 키로 닫기 (선택적 UX 보강)
+    function handleKeyDown(ev: KeyboardEvent) {
+      if (ev.key === 'Escape' && isMenuOpen) setIsMenuOpen(false)
+    }
+
+    // 캡처 단계로 등록해서 가장 먼저 판단 (터치 시작 시점에 닫히도록)
+    document.addEventListener('pointerdown', handlePointerDown, true)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown, true)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isMenuOpen])
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -92,7 +107,13 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
             </select>
           </div>
 
-          <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="menu">
+          <button
+            ref={buttonRef}
+            className="lg:hidden p-2"
+            onClick={() => setIsMenuOpen((s) => !s)}
+            aria-label="menu"
+            aria-expanded={isMenuOpen}
+          >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
             </svg>
@@ -101,25 +122,19 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
       </div>
 
       {isMenuOpen && (
-        <>
-          {/* overlay: 페이지 본문을 덮어 터치/클릭을 잡아서 메뉴 닫기 */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setIsMenuOpen(false)}
-            aria-hidden="true"
-          />
-
-          {/* 메뉴 패널은 overlay보다 위에 있어야 하므로 z-50 유지 */}
-          <div className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold z-50">
-            <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-            <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
-            <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
-            <hr />
-            <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
-              {t.band} →
-            </a>
-          </div>
-        </>
+        <div
+          ref={menuRef}
+          className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold z-50"
+        >
+          {/* 링크 클릭 시에는 onClick으로 메뉴 닫기(클릭 완료 후에 실행되어도 무방) */}
+          <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
+          <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
+          <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+          <hr />
+          <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
+            {t.band} →
+          </a>
+        </div>
       )}
     </header>
   )

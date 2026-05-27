@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-export default function Journey({ lang }: { lang: string }) {
+export default function Journey({ lang = 'ko' }: { lang?: string }) {
   const content = {
     ko: {
       title: "고투게더 (Go-Together)",
@@ -20,8 +20,7 @@ export default function Journey({ lang }: { lang: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko;
 
   return (
-    <section id="journey" className="relative h-[120vh]"> {/* 높이를 충분히 줌 */}
-      {/* 고투게더 대형 배경 (상단) */}
+    <section id="journey" className="relative h-[120vh]">
       <div className="sticky top-0 h-[60vh] w-full relative overflow-hidden">
         <Image 
           src="/gotogether.jpg" 
@@ -35,7 +34,6 @@ export default function Journey({ lang }: { lang: string }) {
         </div>
       </div>
 
-      {/* 졸업 사진이 겹쳐지는 영역 (하단) */}
       <div className="relative h-[60vh] w-full overflow-hidden bg-black">
         <Image 
           src="/graduate.jpg" 
@@ -44,9 +42,9 @@ export default function Journey({ lang }: { lang: string }) {
           className="object-cover opacity-70"
         />
         <div className="absolute inset-0 flex items-center justify-center">
-            <div className="border-4 border-white/30 p-8 md:p-12">
-                <p className="text-white text-3xl md:text-5xl font-black">{t.card2}</p>
-            </div>
+          <div className="border-4 border-white/30 p-8 md:p-12">
+            <p className="text-white text-3xl md:text-5xl font-black">{t.card2}</p>
+          </div>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+// src/components/GalleryClient.tsx
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -103,14 +104,11 @@ export default function GalleryClient({
   }
   const L = (labels as any)[lang] || labels.ko
 
-  // categorize helper
+  // categorize helper — "exhibition"으로 통합 (display, exhibit, 전시 관련)
   const categorize = (it: ImgItem) => {
     const text = (it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? '')).toLowerCase()
-    // art: filenames like art- or explicit '미술', '미술작품', artwork
     if (/(?:\bart-|\b미술|\b미술작품|artwork)/i.test(text)) return 'art'
-    // display: 전시 관련 키워드를 같이 묶음 (전시, display, exhibit, 전시 디스플레이 등)
-    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit)/i.test(text)) return 'display'
-    // reading: 독서 관련
+    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit)/i.test(text)) return 'exhibition'
     if (/(?:독서|reading|book|읽기)/i.test(text)) return 'reading'
     return 'other'
   }
@@ -122,7 +120,7 @@ export default function GalleryClient({
 
     const byCategory: Record<string, ImgItem[]> = {
       art: [],
-      display: [],
+      exhibition: [],
       reading: [],
       other: []
     }
@@ -133,20 +131,19 @@ export default function GalleryClient({
     }
 
     const result: ImgItem[] = []
-    // prefer: art(미술작품) 1개, display(전시/디스플레이) 1개, reading 1개, then fill others
+    // prefer: art(미술작품) 1개, exhibition(전시) 1개, reading 1개, then fill others
     if (byCategory.art.length) result.push(byCategory.art[0])
-    if (result.length < visibleCount && byCategory.display.length) result.push(byCategory.display[0])
+    if (result.length < visibleCount && byCategory.exhibition.length) result.push(byCategory.exhibition[0])
     if (result.length < visibleCount && byCategory.reading.length) result.push(byCategory.reading[0])
 
-    // fill from other
+    // fill with other, then remaining exhibition/art/reading
     let idx = 0
     while (result.length < Math.max(1, visibleCount) && idx < byCategory.other.length) {
       result.push(byCategory.other[idx++])
     }
-    // then remaining displays, arts, readings
-    let d = 1
-    while (result.length < Math.max(1, visibleCount) && d < byCategory.display.length) {
-      result.push(byCategory.display[d++])
+    let e = 1
+    while (result.length < Math.max(1, visibleCount) && e < byCategory.exhibition.length) {
+      result.push(byCategory.exhibition[e++])
     }
     let a = 1
     while (result.length < Math.max(1, visibleCount) && a < byCategory.art.length) {
@@ -157,7 +154,6 @@ export default function GalleryClient({
       result.push(byCategory.reading[r++])
     }
 
-    // final fallback: original order
     if (result.length < Math.max(1, visibleCount)) {
       for (const it of items) {
         if (result.includes(it)) continue
@@ -212,11 +208,7 @@ export default function GalleryClient({
             onClick={() => setIsExpanded((s) => !s)}
             className="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold hover:bg-gray-200 transition"
           >
-            {isExpanded
-              ? L.collapse
-              : lang === 'ko'
-              ? `${L.showMore} (${items.length - listToShow.length} ${L.moreSuffix})`
-              : `${L.showMore} (${items.length - listToShow.length} ${L.moreSuffix})`}
+            {isExpanded ? L.collapse : `${L.showMore} (${items.length - listToShow.length} ${L.moreSuffix})`}
           </button>
         </div>
       )}

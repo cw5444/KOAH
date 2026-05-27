@@ -18,7 +18,7 @@ export default function Hero({ lang = 'ko' }: { lang?: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
-    <section id="hero" className="py-28 bg-white">
+    <section id="hero" className="py-28 bg-white scroll-mt-28">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-6xl font-black mb-6">{t.title}</h1>
         <p className="text-xl text-gray-600 mb-10">{t.subtitle}</p>

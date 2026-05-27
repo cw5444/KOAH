@@ -1,28 +1,38 @@
+// app/page.tsx (간단 예시)
 'use client'
 
-import { useLanguage } from '@/context/LanguageContext'
-import Hero from '@/components/sections/Hero'
-import About from '@/components/sections/About'
-import Classes from '@/components/sections/Classes'
-import Curriculum from '@/components/sections/Curriculum'
-import Sports from '@/components/sections/Sports'
-import ExhibitionsSection from '@/components/sections/ExhibitionsSection' // Sports 아래
-import Journey from '@/components/sections/Journey'
+import { useEffect, useState } from 'react'
+import ExhibitionsSection from '@/components/sections/ExhibitionsSection'
 import Contact from '@/components/sections/Contact'
+// ... 다른 섹션 import
 
 export default function HomePage() {
-  const { lang } = useLanguage()
+  const [lang, setLang] = useState<'ko' | 'en'>('ko')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('site_lang') as 'ko' | 'en' | null
+    if (saved) setLang(saved)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('site_lang', lang)
+  }, [lang])
 
   return (
-    <>
-      <Hero lang={lang} />
-      <About lang={lang} />
-      <Classes lang={lang} />
-      <Curriculum lang={lang} />
-      <Sports lang={lang} />
-      <ExhibitionsSection />
-      <Journey lang={lang} />
+    <main>
+      <header className="...">
+        {/* 간단한 언어 토글 */}
+        <button
+          onClick={() => setLang((s) => (s === 'ko' ? 'en' : 'ko'))}
+          className="px-3 py-1 border rounded"
+        >
+          {lang === 'ko' ? 'EN' : 'KR'}
+        </button>
+      </header>
+
+      {/* ...다른 섹션에도 lang 전달 */}
+      <ExhibitionsSection lang={lang} />
       <Contact lang={lang} />
-    </>
+    </main>
   )
 }

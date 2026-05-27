@@ -16,7 +16,7 @@ export default function Contact({ lang = 'ko' }: { lang?: string }) {
   const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section id="contact" className="py-20 bg-gray-50 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h2 className="text-3xl font-black mb-4">{t.title}</h2>
         <p className="text-gray-600 mb-8">{t.desc}</p>

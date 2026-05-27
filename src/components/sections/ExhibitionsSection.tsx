@@ -1,3 +1,4 @@
+// src/components/sections/ExhibitionsSection.tsx
 'use client'
 
 import dynamic from 'next/dynamic'

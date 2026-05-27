@@ -1,5 +1,6 @@
 'use client'
 
+import { useLanguage } from '@/context/LanguageContext'
 import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import Classes from '@/components/sections/Classes'
@@ -8,10 +9,11 @@ import Sports from '@/components/sections/Sports'
 import Journey from '@/components/sections/Journey'
 import Contact from '@/components/sections/Contact'
 
-export default function HomePage({ lang = 'ko' }: { lang?: string }) {
+export default function HomePage() {
+  const { lang } = useLanguage()
+
   return (
     <>
-      {/* Header는 layout -> RootWrapper에서 렌더됩니다 */}
       <Hero lang={lang} />
       <About lang={lang} />
       <Classes lang={lang} />

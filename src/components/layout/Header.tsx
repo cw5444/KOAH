@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface HeaderProps {
   lang?: string
@@ -10,17 +11,27 @@ interface HeaderProps {
 }
 
 export default function Header({ lang: propLang, setLang: propSetLang }: HeaderProps) {
-  // 내부 상태는 여전히 유지하지만, 부모에서 prop으로 전달하면 그걸 우선 사용합니다.
   const [internalLang, setInternalLang] = useState('ko')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const lang = propLang ?? internalLang
+  // Context가 있으면 사용, 없으면 prop, 없으면 내부 상태 사용
+  let ctxLang: string | undefined
+  let ctxSetLang: ((l: string) => void) | undefined
+  try {
+    const ctx = useLanguage()
+    ctxLang = ctx.lang
+    ctxSetLang = ctx.setLang
+  } catch {
+    // Provider가 없으면 useLanguage에서 에러가 날 수 있으므로 무시 (fallback 사용)
+  }
+
+  const lang = propLang ?? ctxLang ?? internalLang
   const setLang = (value: string) => {
     if (propSetLang) propSetLang(value)
+    else if (ctxSetLang) ctxSetLang(value)
     else setInternalLang(value)
   }
 
-  // 언어별 텍스트 데이터
   const content = {
     ko: {
       about: '소개',
@@ -36,45 +47,29 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
     }
   }
 
-  // 현재 언어에 맞는 텍스트 선택 (타입 안전성 위해 'ko' 기본값)
   const t = content[lang as 'ko' | 'en'] || content.ko
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
-        
-        {/* 로고 영역 */}
         <Link href="/" className="flex items-center gap-4">
           <div className="relative w-20 h-20 flex-shrink-0">
-            <Image 
-              src="/logo.png" 
-              alt="산위의 학교 로고" 
-              fill 
-              className="object-contain" 
-              priority 
-            />
+            <Image src="/logo.png" alt="산위의 학교 로고" fill className="object-contain" priority />
           </div>
           <div className="h-12 w-[1px] bg-gray-200" />
           <div className="relative w-48 h-16 flex-shrink-0">
-            <Image 
-              src="/logo_text.png" 
-              alt="산위의 학교" 
-              fill 
-              className="object-contain object-left" 
-              priority 
-            />
+            <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
           </div>
         </Link>
 
-        {/* 데스크탑 네비게이션 */}
         <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center">
           <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
           <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
           <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
-          
-          <a 
-            href="https://www.band.us/band/92458697/post" 
-            target="_blank" 
+
+          <a
+            href="https://www.band.us/band/92458697/post"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-xs bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
           >
@@ -82,7 +77,6 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
           </a>
         </nav>
 
-        {/* 오른쪽 끝: 언어 선택 및 모바일 버튼 */}
         <div className="flex items-center gap-4">
           <div className="hidden sm:block">
             <select
@@ -95,11 +89,7 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
             </select>
           </div>
 
-          {/* 모바일 햄버거 버튼 */}
-          <button 
-            className="lg:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+          <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
             </svg>
@@ -107,19 +97,13 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
         </div>
       </div>
 
-      {/* 모바일 메뉴 드롭다운 */}
       {isMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold">
           <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
           <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
           <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
           <hr />
-          <a 
-            href="https://www.band.us/band/92458697/post" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-green-600"
-          >
+          <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
             {t.band} →
           </a>
         </div>

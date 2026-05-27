@@ -1,23 +1,43 @@
 {
   "sports": [
     {
-      "file": "/images/sports/sportsday-group.jpg",
+      "file": "/images/sports/sportsday-group.webp",
       "alt": "신나는 산위의 체육대회 단체 사진",
       "caption": "신나는 산위의 체육대회"
     }
   ],
   "journey": [
     {
-      "file": "/images/journey/go-together.jpg",
+      "file": "/images/journey/go-together.webp",
       "alt": "Go-Together 단체 사진",
       "caption": "Go-Together"
     }
   ],
   "exhibitions": [
-    { "file": "/images/exhibitions/art-01.jpg", "alt": "학생 작품 1", "caption": "학생 작품" },
-    { "file": "/images/exhibitions/art-02.jpg", "alt": "학생 작품 2", "caption": "학생 작품" },
-    { "file": "/images/exhibitions/palm-tree-exhibit.jpg", "alt": "종려나무 전시", "caption": "종려나무" },
-    { "file": "/images/exhibitions/secret-reading-club.jpg", "alt": "비밀독서단 게시물", "caption": "비밀독서단" },
-    { "file": "/images/exhibitions/mindmap.jpg", "alt": "독서 활동 마인드맵", "caption": "독서 활동" }
+    {
+      "file": "/images/exhibitions/art-01.webp",
+      "alt": "학생 작품 1",
+      "caption": "학생 작품"
+    },
+    {
+      "file": "/images/exhibitions/art-02.webp",
+      "alt": "학생 작품 2",
+      "caption": "학생 작품"
+    },
+    {
+      "file": "/images/exhibitions/palm-tree-exhibit.webp",
+      "alt": "종려나무 전시",
+      "caption": "종려나무"
+    },
+    {
+      "file": "/images/exhibitions/secret-reading-club.webp",
+      "alt": "비밀독서단 게시물",
+      "caption": "비밀독서단"
+    },
+    {
+      "file": "/images/exhibitions/mindmap.webp",
+      "alt": "독서 활동 마인드맵",
+      "caption": "독서 활동"
+    }
   ]
 }

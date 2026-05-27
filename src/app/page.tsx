@@ -7,6 +7,7 @@ import Classes from '@/components/sections/Classes'
 import Curriculum from '@/components/sections/Curriculum'
 import Sports from '@/components/sections/Sports'
 import Journey from '@/components/sections/Journey'
+import ExhibitionsSection from '@/components/sections/ExhibitionsSection'
 import Contact from '@/components/sections/Contact'
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
       <Curriculum lang={lang} />
       <Sports lang={lang} />
       <Journey lang={lang} />
+      <ExhibitionsSection />
       <Contact lang={lang} />
     </>
   )

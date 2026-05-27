@@ -106,8 +106,11 @@ export default function GalleryClient({
   // categorize helper
   const categorize = (it: ImgItem) => {
     const text = (it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? '')).toLowerCase()
+    // art: filenames like art- or explicit '미술', '미술작품', artwork
     if (/(?:\bart-|\b미술|\b미술작품|artwork)/i.test(text)) return 'art'
-    if (/(?:전시|display|exhibit|전시 디스플레이|디스플레이|exhibit)/i.test(text)) return 'display'
+    // display: 전시 관련 키워드를 같이 묶음 (전시, display, exhibit, 전시 디스플레이 등)
+    if (/(?:전시|display|exhibit|전시\s?디스플레이|디스플레이|rothem|olive|palm|exhibit)/i.test(text)) return 'display'
+    // reading: 독서 관련
     if (/(?:독서|reading|book|읽기)/i.test(text)) return 'reading'
     return 'other'
   }
@@ -130,14 +133,17 @@ export default function GalleryClient({
     }
 
     const result: ImgItem[] = []
+    // prefer: art(미술작품) 1개, display(전시/디스플레이) 1개, reading 1개, then fill others
     if (byCategory.art.length) result.push(byCategory.art[0])
     if (result.length < visibleCount && byCategory.display.length) result.push(byCategory.display[0])
     if (result.length < visibleCount && byCategory.reading.length) result.push(byCategory.reading[0])
 
+    // fill from other
     let idx = 0
     while (result.length < Math.max(1, visibleCount) && idx < byCategory.other.length) {
       result.push(byCategory.other[idx++])
     }
+    // then remaining displays, arts, readings
     let d = 1
     while (result.length < Math.max(1, visibleCount) && d < byCategory.display.length) {
       result.push(byCategory.display[d++])
@@ -151,6 +157,7 @@ export default function GalleryClient({
       result.push(byCategory.reading[r++])
     }
 
+    // final fallback: original order
     if (result.length < Math.max(1, visibleCount)) {
       for (const it of items) {
         if (result.includes(it)) continue

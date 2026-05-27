@@ -40,7 +40,6 @@ export default function GalleryClient({
 
   const openLightbox = useCallback((index: number) => {
     setLightboxIndex(index)
-    // prevent body scroll while open
     document.body.style.overflow = 'hidden'
   }, [])
 
@@ -95,7 +94,6 @@ export default function GalleryClient({
         ))}
       </div>
 
-      {/* Load more / Collapse */}
       {items.length > initialCount && (
         <div className="mt-6 flex justify-center">
           <button
@@ -107,7 +105,6 @@ export default function GalleryClient({
         </div>
       )}
 
-      {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
           role="dialog"
@@ -119,7 +116,6 @@ export default function GalleryClient({
             className="relative max-w-[95vw] max-h-[95vh] w-full"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* image container */}
             <div className="relative w-full h-[70vh] md:h-[80vh] bg-black">
               <Image
                 src={items[lightboxIndex].file}
@@ -129,12 +125,10 @@ export default function GalleryClient({
               />
             </div>
 
-            {/* caption */}
             {items[lightboxIndex].caption && (
               <div className="mt-2 text-sm text-white/90">{items[lightboxIndex].caption}</div>
             )}
 
-            {/* controls */}
             <button
               onClick={closeLightbox}
               aria-label="close"

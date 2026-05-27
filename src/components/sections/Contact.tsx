@@ -21,7 +21,7 @@ export default function Contact({ lang = 'ko' }: { lang?: string }) {
         <h2 className="text-3xl font-black mb-4">{t.title}</h2>
         <p className="text-gray-600 mb-8">{t.desc}</p>
         <a
-          href="mailto:info@koah.school"
+          href="mailto:cw5444@gmail.com"
           className="inline-block bg-green-500 text-white px-6 py-3 rounded-full font-bold hover:bg-green-600 transition-colors"
         >
           {t.contactText}

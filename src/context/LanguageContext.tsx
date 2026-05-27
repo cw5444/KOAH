@@ -2,15 +2,16 @@
 
 import React, { createContext, useContext, useState } from 'react'
 
+type Lang = 'ko' | 'en'
 type LangContextType = {
-  lang: string
-  setLang: (lang: string) => void
+  lang: Lang
+  setLang: (l: Lang) => void
 }
 
 const LanguageContext = createContext<LangContextType | null>(null)
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState('ko')
+  const [lang, setLang] = useState<Lang>('ko')
   return (
     <LanguageContext.Provider value={{ lang, setLang }}>
       {children}
@@ -18,7 +19,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-/** 안전하게 Context를 읽는 hook — Provider 밖에서 호출해도 에러를 던지지 않고 null을 반환하지 않도록 사용처에서 검사하세요. */
 export function useLanguage() {
   const ctx = useContext(LanguageContext)
   if (!ctx) {

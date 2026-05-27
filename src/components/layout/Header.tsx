@@ -11,25 +11,27 @@ interface HeaderProps {
 }
 
 export default function Header({ lang: propLang, setLang: propSetLang }: HeaderProps) {
-  const [internalLang, setInternalLang] = useState('ko')
+  const [internalLang, setInternalLang] = useState<'ko' | 'en'>('ko')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // Context가 있으면 사용, 없으면 prop, 없으면 내부 상태 사용
-  let ctxLang: string | undefined
-  let ctxSetLang: ((l: string) => void) | undefined
+  // Context 사용 시(정상동작 루트) Context 값을 우선 사용.
+  // 만약 Header가 Provider 밖에서 테스트용으로 쓰이면 prop 또는 내부 상태를 사용하도록 fallback 유지.
+  let ctxLang: 'ko' | 'en' | undefined
+  let ctxSetLang: ((l: 'ko' | 'en') => void) | undefined
   try {
     const ctx = useLanguage()
     ctxLang = ctx.lang
     ctxSetLang = ctx.setLang
   } catch {
-    // Provider가 없으면 useLanguage에서 에러가 날 수 있으므로 무시 (fallback 사용)
+    // Provider가 없을 경우 useLanguage에서 에러가 발생하므로 무시하고 fallback 사용
   }
 
-  const lang = propLang ?? ctxLang ?? internalLang
+  const lang = (propLang as 'ko' | 'en') ?? ctxLang ?? internalLang
   const setLang = (value: string) => {
-    if (propSetLang) propSetLang(value)
-    else if (ctxSetLang) ctxSetLang(value)
-    else setInternalLang(value)
+    const v = value === 'en' ? 'en' : 'ko'
+    if (propSetLang) propSetLang(v)
+    else if (ctxSetLang) ctxSetLang(v)
+    else setInternalLang(v)
   }
 
   const content = {
@@ -47,7 +49,7 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
     }
   }
 
-  const t = content[lang as 'ko' | 'en'] || content.ko
+  const t = content[lang]
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -89,7 +91,7 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
             </select>
           </div>
 
-          <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="menu">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
             </svg>

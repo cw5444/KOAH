@@ -1,4 +1,3 @@
-// src/components/GalleryClient.tsx
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -6,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 type ImgItem = { file: string; alt?: string; caption?: string }
 
 function getFallbackPair(file: string) {
-  // file이 "/images/exhibitions/art-01.webp" 또는 ".jpg" 같은 형태라고 가정
   const base = file.replace(/\.webp$|\.jpg$|\.jpeg$/i, '')
   return {
     webp: base + '.webp',
@@ -16,10 +14,12 @@ function getFallbackPair(file: string) {
 
 export default function GalleryClient({
   category = 'exhibitions',
-  initialCount = 6
+  initialCount = 6,
+  lang = 'ko'
 }: {
   category?: string
   initialCount?: number
+  lang?: string
 }) {
   const [items, setItems] = useState<ImgItem[]>([])
   const [visibleCount, setVisibleCount] = useState<number>(initialCount)
@@ -83,47 +83,96 @@ export default function GalleryClient({
     return () => document.removeEventListener('keydown', onKey)
   }, [lightboxIndex, closeLightbox, showPrev, showNext])
 
-  // --- custom preview logic for "exhibitions" when collapsed ---
+  const labels = {
+    ko: {
+      collapse: '간단히 접기',
+      showMore: '더 보기',
+      moreSuffix: '장 더',
+      close: '닫기',
+      previous: '이전',
+      next: '다음'
+    },
+    en: {
+      collapse: 'Collapse',
+      showMore: 'Show more',
+      moreSuffix: 'more',
+      close: 'Close',
+      previous: 'Previous',
+      next: 'Next'
+    }
+  }
+  const L = (labels as any)[lang] || labels.ko
+
+  // categorize helper
+  const categorize = (it: ImgItem) => {
+    const text = (it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? '')).toLowerCase()
+    if (/(?:\bart-|\b미술|\b미술작품|artwork)/i.test(text)) return 'art'
+    if (/(?:전시|display|exhibit|전시 디스플레이|디스플레이|exhibit)/i.test(text)) return 'display'
+    if (/(?:독서|reading|book|읽기)/i.test(text)) return 'reading'
+    return 'other'
+  }
+
   const previewItems = useMemo(() => {
     if (!items.length) return []
     if (category !== 'exhibitions') return items.slice(0, visibleCount)
-
     if (isExpanded) return items.slice(0, visibleCount)
 
-    // collapsed: show one 'student artwork' then pick diverse others
-    const studentArts = items.filter((it) =>
-      /art-|student|학생|학생 작품/i.test(it.file + ' ' + (it.caption ?? '') + ' ' + (it.alt ?? ''))
-    )
-    const others = items.filter((it) => !studentArts.includes(it))
+    const byCategory: Record<string, ImgItem[]> = {
+      art: [],
+      display: [],
+      reading: [],
+      other: []
+    }
+
+    for (const it of items) {
+      const cat = categorize(it)
+      byCategory[cat].push(it)
+    }
 
     const result: ImgItem[] = []
-    if (studentArts.length) result.push(studentArts[0]) // 한 개만
-    // fill with distinct other categories up to initialCount
+    if (byCategory.art.length) result.push(byCategory.art[0])
+    if (result.length < visibleCount && byCategory.display.length) result.push(byCategory.display[0])
+    if (result.length < visibleCount && byCategory.reading.length) result.push(byCategory.reading[0])
+
     let idx = 0
-    while (result.length < Math.max(1, visibleCount) && idx < others.length) {
-      result.push(others[idx])
-      idx++
+    while (result.length < Math.max(1, visibleCount) && idx < byCategory.other.length) {
+      result.push(byCategory.other[idx++])
     }
-    // fallback: if still fewer, add more studentArts
-    let sidx = 1
-    while (result.length < Math.max(1, visibleCount) && sidx < studentArts.length) {
-      result.push(studentArts[sidx++])
+    let d = 1
+    while (result.length < Math.max(1, visibleCount) && d < byCategory.display.length) {
+      result.push(byCategory.display[d++])
     }
+    let a = 1
+    while (result.length < Math.max(1, visibleCount) && a < byCategory.art.length) {
+      result.push(byCategory.art[a++])
+    }
+    let r = 1
+    while (result.length < Math.max(1, visibleCount) && r < byCategory.reading.length) {
+      result.push(byCategory.reading[r++])
+    }
+
+    if (result.length < Math.max(1, visibleCount)) {
+      for (const it of items) {
+        if (result.includes(it)) continue
+        result.push(it)
+        if (result.length >= visibleCount) break
+      }
+    }
+
     return result
   }, [items, category, isExpanded, visibleCount])
 
   if (!items.length) return null
 
-  const renderImage = (it: ImgItem, i: number) => {
+  const renderImage = (it: ImgItem, globalIndex: number) => {
     const { webp, jpg } = getFallbackPair(it.file)
     return (
       <figure
-        key={i}
+        key={globalIndex}
         className="relative group cursor-pointer overflow-hidden rounded"
-        onClick={() => openLightbox(i)}
+        onClick={() => openLightbox(globalIndex)}
       >
         <div className="w-full aspect-[4/3] bg-gray-100 relative flex items-center justify-center">
-          {/* picture + img fallback */}
           <picture className="w-full h-full block">
             <source srcSet={webp} type="image/webp" />
             <img
@@ -139,13 +188,15 @@ export default function GalleryClient({
     )
   }
 
-  // use previewItems when collapsed; otherwise use items.slice(0, visibleCount)
   const listToShow = isExpanded ? items.slice(0, visibleCount) : previewItems
 
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {listToShow.map((it, i) => renderImage(it, i))}
+        {listToShow.map((it) => {
+          const globalIdx = items.indexOf(it)
+          return renderImage(it, globalIdx)
+        })}
       </div>
 
       {items.length > initialCount && (
@@ -154,7 +205,11 @@ export default function GalleryClient({
             onClick={() => setIsExpanded((s) => !s)}
             className="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold hover:bg-gray-200 transition"
           >
-            {isExpanded ? '간단히 접기' : `더 보기 (${items.length - (isExpanded ? items.length : listToShow.length)} 장 더)` }
+            {isExpanded
+              ? L.collapse
+              : lang === 'ko'
+              ? `${L.showMore} (${items.length - listToShow.length} ${L.moreSuffix})`
+              : `${L.showMore} (${items.length - listToShow.length} ${L.moreSuffix})`}
           </button>
         </div>
       )}
@@ -166,12 +221,8 @@ export default function GalleryClient({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           onClick={closeLightbox}
         >
-          <div
-            className="relative max-w-[95vw] max-h-[95vh] w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative max-w-[95vw] max-h-[95vh] w-full" onClick={(e) => e.stopPropagation()}>
             <div className="relative w-full h-[70vh] md:h-[80vh] bg-black flex items-center justify-center">
-              {/* Lightbox: try webp then jpg */}
               <picture className="w-full h-full block">
                 <source srcSet={getFallbackPair(items[lightboxIndex].file).webp} type="image/webp" />
                 <img
@@ -188,7 +239,7 @@ export default function GalleryClient({
 
             <button
               onClick={closeLightbox}
-              aria-label="close"
+              aria-label={L.close}
               className="absolute top-3 right-3 text-white bg-black/40 p-2 rounded-full"
             >
               ✕
@@ -196,14 +247,14 @@ export default function GalleryClient({
 
             <button
               onClick={showPrev}
-              aria-label="previous"
+              aria-label={L.previous}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-white bg-black/40 p-2 rounded-full"
             >
               ←
             </button>
             <button
               onClick={showNext}
-              aria-label="next"
+              aria-label={L.next}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-white bg-black/40 p-2 rounded-full"
             >
               →

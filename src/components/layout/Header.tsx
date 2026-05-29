@@ -1,4 +1,3 @@
-// src/components/layout/Header.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
@@ -6,35 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
 
-interface HeaderProps {
-  lang?: string
-  setLang?: (lang: string) => void
-}
-
-export default function Header({ lang: propLang, setLang: propSetLang }: HeaderProps) {
-  const [internalLang, setInternalLang] = useState<'ko' | 'en'>('ko')
+export default function Header() {
+  const { lang, setLang } = useLanguage()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
-
-  // Context fallback handling (same as before)
-  let ctxLang: 'ko' | 'en' | undefined
-  let ctxSetLang: ((l: 'ko' | 'en') => void) | undefined
-  try {
-    const ctx = useLanguage()
-    ctxLang = ctx.lang
-    ctxSetLang = ctx.setLang
-  } catch {
-    // Provider가 없으면 무시 (테스팅 등)
-  }
-
-  const lang = (propLang as 'ko' | 'en') ?? ctxLang ?? internalLang
-  const setLang = (value: string) => {
-    const v = value === 'en' ? 'en' : 'ko'
-    if (propSetLang) propSetLang(v)
-    else if (ctxSetLang) ctxSetLang(v)
-    else setInternalLang(v)
-  }
 
   const content = {
     ko: { about: '소개', classes: '수업', contact: '문의', band: '산위의 학교 공식밴드' },
@@ -43,22 +18,18 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
   const t = content[lang]
 
   useEffect(() => {
-    // pointerdown: 터치/클릭 시작 시점에 닫기 (요구사항)
     function handlePointerDown(ev: PointerEvent) {
       if (!isMenuOpen) return
       const target = ev.target as Node | null
       if (!target) return
-      // 메뉴 내부 또는 메뉴 버튼이면 닫지 않음 (링크 클릭을 방해하지 않기 위함)
       if (menuRef.current?.contains(target) || buttonRef.current?.contains(target)) return
       setIsMenuOpen(false)
     }
 
-    // Escape 키로 닫기 (선택적 UX 보강)
     function handleKeyDown(ev: KeyboardEvent) {
       if (ev.key === 'Escape' && isMenuOpen) setIsMenuOpen(false)
     }
 
-    // 캡처 단계로 등록해서 가장 먼저 판단 (터치 시작 시점에 닫히도록)
     document.addEventListener('pointerdown', handlePointerDown, true)
     document.addEventListener('keydown', handleKeyDown)
     return () => {
@@ -100,7 +71,7 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
             <select
               className="appearance-none font-bold text-xs bg-gray-50 border border-gray-100 rounded-full px-5 py-2 cursor-pointer focus:outline-none hover:bg-gray-100 transition-colors"
               value={lang}
-              onChange={(e) => setLang(e.target.value)}
+              onChange={(e) => setLang(e.target.value as 'ko' | 'en')}
             >
               <option value="ko">KOREAN</option>
               <option value="en">ENGLISH</option>
@@ -126,7 +97,6 @@ export default function Header({ lang: propLang, setLang: propSetLang }: HeaderP
           ref={menuRef}
           className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold z-50"
         >
-          {/* 링크 클릭 시에는 onClick으로 메뉴 닫기(클릭 완료 후에 실행되어도 무방) */}
           <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
           <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
           <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>

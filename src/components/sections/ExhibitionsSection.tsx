@@ -6,7 +6,8 @@ const GalleryClient = dynamic(() => import('@/components/GalleryClient'), { ssr:
 
 export default function ExhibitionsSection({ lang = 'ko' }: { lang?: string }) {
   // 🔍 디버그: lang 값 확인
-  console.log('ExhibitionsSection lang:', lang)
+  console.log('ExhibitionsSection received lang:', lang)
+  console.log('ExhibitionsSection lang type:', typeof lang)
 
   const content = {
     ko: {
@@ -18,10 +19,19 @@ export default function ExhibitionsSection({ lang = 'ko' }: { lang?: string }) {
       desc: 'Student artworks and activity records. Click an image to view it larger.'
     }
   }
-  const t = content[lang as 'ko' | 'en'] || content.ko
+  
+  const resolvedLang = (lang as 'ko' | 'en') || 'ko'
+  const t = content[resolvedLang]
+
+  console.log('ExhibitionsSection resolved lang:', resolvedLang)
+  console.log('ExhibitionsSection title:', t.title)
 
   return (
-    <section id="exhibitions" className="scroll-mt-28 py-16 bg-white">
+    <section 
+      id="exhibitions" 
+      data-lang={resolvedLang}
+      className="scroll-mt-28 py-16 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-2xl font-bold mb-6">{t.title}</h2>
         <p className="text-sm text-gray-600 mb-6">{t.desc}</p>

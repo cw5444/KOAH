@@ -1,33 +1,26 @@
-// app/page.tsx (간단 예시)
+// app/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLanguage } from '@/context/LanguageContext'
 import ExhibitionsSection from '@/components/sections/ExhibitionsSection'
 import Contact from '@/components/sections/Contact'
 // ... 다른 섹션 import
 
 export default function HomePage() {
-  const [lang, setLang] = useState<'ko' | 'en'>('ko')
+  const { lang } = useLanguage()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem('site_lang') as 'ko' | 'en' | null
-    if (saved) setLang(saved)
+    setMounted(true)
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem('site_lang', lang)
-  }, [lang])
+  if (!mounted) return null
 
   return (
     <main>
       <header className="...">
-        {/* 간단한 언어 토글 */}
-        <button
-          onClick={() => setLang((s) => (s === 'ko' ? 'en' : 'ko'))}
-          className="px-3 py-1 border rounded"
-        >
-          {lang === 'ko' ? 'EN' : 'KR'}
-        </button>
+        {/* Header에서 언어 선택하므로 여기선 제거 */}
       </header>
 
       {/* ...다른 섹션에도 lang 전달 */}

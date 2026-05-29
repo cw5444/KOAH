@@ -9,8 +9,7 @@ import Contact from '@/components/sections/Contact'
 
 export default function HomePage() {
   const { lang } = useLanguage()
-  const [mounted, setMounted] = useState(false)
-
+  
   useEffect(() => {
     setMounted(true)
   }, [])

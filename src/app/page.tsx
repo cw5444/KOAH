@@ -1,7 +1,6 @@
 // app/page.tsx
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useLanguage } from '@/context/LanguageContext'
 import ExhibitionsSection from '@/components/sections/ExhibitionsSection'
 import Contact from '@/components/sections/Contact'
@@ -10,12 +9,6 @@ import Contact from '@/components/sections/Contact'
 export default function HomePage() {
   const { lang } = useLanguage()
   
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
   return (
     <main>
       <header className="...">

@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic'
 const GalleryClient = dynamic(() => import('@/components/GalleryClient'), { ssr: false })
 
 export default function ExhibitionsSection({ lang = 'ko' }: { lang?: string }) {
+  // 🔍 디버그: lang 값 확인
+  console.log('ExhibitionsSection lang:', lang)
+
   const content = {
     ko: {
       title: '전시 / 독서 활동',

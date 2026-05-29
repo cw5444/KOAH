@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client'
 
 import { useLanguage } from '@/context/LanguageContext'
@@ -11,13 +10,9 @@ export default function HomePage() {
   
   return (
     <main>
-      <header className="...">
-        {/* Header에서 언어 선택하므로 여기선 제거 */}
-      </header>
-
-      {/* ...다른 섹션에도 lang 전달 */}
       <ExhibitionsSection lang={lang} />
       <Contact lang={lang} />
+      {/* ...다른 섹션들 */}
     </main>
   )
 }

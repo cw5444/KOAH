@@ -17,6 +17,18 @@ export default function Header() {
   }
   const t = content[lang]
 
+  // 메뉴 열릴 때 body 스크롤 금지
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMenuOpen])
+
   useEffect(() => {
     function handlePointerDown(ev: PointerEvent) {
       if (!isMenuOpen) return

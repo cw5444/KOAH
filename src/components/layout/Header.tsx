@@ -91,10 +91,19 @@ export default function Header() {
         </button>
       </div>
 
+      {/* 배경 오버레이 - 메뉴 클릭 시 닫기 */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* 메뉴 - 오버레이로 위에 떠있음 */}
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className="lg:hidden bg-white border-t border-gray-100 px-6 py-8 flex flex-col gap-6 font-bold z-50"
+          className="fixed top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
         >
           <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
           <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>

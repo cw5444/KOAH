@@ -32,8 +32,9 @@ export default function About({ lang = 'ko' }: { lang?: string }) {
           <p className="text-gray-600 leading-relaxed">{t.p4}</p>
         </div>
 
-        <div className="md:w-1/2 relative h-48 md:h-96 rounded-2xl overflow-hidden shadow-sm">
-          <Image src="/gotogether.jpg" alt="About image" fill className="object-cover" />
+        {/* 학교소개 개념도 이미지 */}
+        <div className="md:w-1/2 relative h-64 md:h-80 rounded-2xl overflow-hidden shadow-sm">
+          <Image src="/koah-concept.jpg" alt="KOAH concept" fill className="object-cover" />
         </div>
       </div>
     </section>

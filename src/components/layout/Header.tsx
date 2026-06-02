@@ -80,7 +80,7 @@ export default function Header() {
 
         <button
           ref={buttonRef}
-          className="lg:hidden p-2"
+          className="lg:hidden p-2 relative z-50"
           onClick={() => setIsMenuOpen((s) => !s)}
           aria-label="menu"
           aria-expanded={isMenuOpen}

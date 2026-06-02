@@ -1,18 +1,28 @@
 'use client'
 
 import { useLanguage } from '@/context/LanguageContext'
+import Hero from '@/components/sections/Hero'
+import About from '@/components/sections/About'
+import Classes from '@/components/sections/Classes'
+import Curriculum from '@/components/sections/Curriculum'
+import Journey from '@/components/sections/Journey'
+import Sports from '@/components/sections/Sports'
 import ExhibitionsSection from '@/components/sections/ExhibitionsSection'
 import Contact from '@/components/sections/Contact'
-// ... 다른 섹션 import
 
 export default function HomePage() {
   const { lang } = useLanguage()
   
   return (
     <main>
+      <Hero lang={lang} />
+      <About lang={lang} />
+      <Classes lang={lang} />
+      <Curriculum lang={lang} />
+      <Journey lang={lang} />
+      <Sports lang={lang} />
       <ExhibitionsSection lang={lang} />
       <Contact lang={lang} />
-      {/* ...다른 섹션들 */}
     </main>
   )
 }

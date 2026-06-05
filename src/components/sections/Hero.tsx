@@ -21,13 +21,8 @@ export default function Hero({ lang = 'ko' }: { lang?: string }) {
   return (
     <section id="hero" className="py-0 bg-white scroll-mt-28">
       <div className="max-w-7xl mx-auto px-6">
-        {/* 이미지 */}
-        <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden mb-12 shadow-lg">
-          <Image src="/gotogether.jpg" alt="Hero image" fill className="object-cover" />
-        </div>
-
         {/* 텍스트 */}
-        <div className="text-center pb-20">
+        <div className="text-center pt-20 pb-12">
           <h1 className="text-5xl md:text-6xl font-black mb-6">{t.title}</h1>
           <p className="text-xl text-gray-600 mb-10">{t.subtitle}</p>
           <Link
@@ -37,6 +32,13 @@ export default function Hero({ lang = 'ko' }: { lang?: string }) {
             {t.cta}
           </Link>
         </div>
+
+        {/* 이미지 */}
+        <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <Image src="/gotogether.jpg" alt="Hero image" fill className="object-cover" />
+        </div>
+
+        <div className="h-20" />
       </div>
     </section>
   )

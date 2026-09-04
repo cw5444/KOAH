@@ -52,11 +52,13 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div className="max-w-7xl mx-auto px-2 sm:px-6 h-20 sm:h-28 lg:h-32 flex items-center justify-between gap-2">
+  <div className="max-w-7xl mx-auto px-2 sm:px-6 h-24 sm:h-32 lg:h-40 flex items-center justify-between gap-2">
+
     <Link href="/" className="flex items-center flex-shrink-0">
-      <div className="relative w-56 sm:w-64 lg:w-96 h-16 sm:h-20 lg:h-24 flex-shrink-0">
-        <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
-      </div>
+      <div className="relative w-84 sm:w-96 lg:w-[540px] h-24 sm:h-28 lg:h-36 flex-shrink-0">
+  <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
+</div>
+
     </Link>
 
     <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center ml-auto">
@@ -97,7 +99,8 @@ export default function Header() {
   {isMenuOpen && (
     <div
       ref={menuRef}
-      className="fixed top-20 sm:top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
+      className="fixed top-24 sm:top-32 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
+
     >
       <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
       <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>

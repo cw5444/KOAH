@@ -52,9 +52,9 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div className="max-w-7xl mx-auto px-6 h-32 lg:h-32 md:h-28 sm:h-24 flex items-center justify-between">
-    <Link href="/" className="flex items-center gap-2">
-      <div className="relative w-96 lg:w-96 md:w-72 sm:w-56 h-24 lg:h-24 md:h-20 sm:h-16 flex-shrink-0">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 sm:h-28 lg:h-32 flex items-center justify-between">
+    <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+      <div className="relative w-48 sm:w-64 lg:w-96 h-14 sm:h-20 lg:h-24 flex-shrink-0">
         <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
       </div>
     </Link>
@@ -81,7 +81,7 @@ export default function Header() {
       aria-label="menu"
       aria-expanded={isMenuOpen}
     >
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
       </svg>
     </button>
@@ -97,7 +97,7 @@ export default function Header() {
   {isMenuOpen && (
     <div
       ref={menuRef}
-      className="fixed top-24 sm:top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
+      className="fixed top-20 sm:top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
     >
       <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
       <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
@@ -109,6 +109,7 @@ export default function Header() {
     </div>
   )}
 </header>
+
 
   )
 }

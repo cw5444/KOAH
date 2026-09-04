@@ -52,12 +52,14 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
+  <div className="max-w-7xl mx-auto px-6 h-32 flex items-center justify-between">
+
         <Link href="/" className="flex items-center gap-2">
-  <div className="relative w-64 h-20 flex-shrink-0">
+  <div className="relative w-96 h-24 flex-shrink-0">
     <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
   </div>
 </Link>
+
 
 
 

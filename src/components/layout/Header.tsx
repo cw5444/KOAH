@@ -52,68 +52,63 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div className="max-w-7xl mx-auto px-6 h-32 flex items-center justify-between">
-
-        <Link href="/" className="flex items-center gap-2">
-  <div className="relative w-96 h-24 flex-shrink-0">
-    <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
-  </div>
-</Link>
-
-
-
-
-        <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center">
-          <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
-          <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
-          <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
-
-          <a
-            href="https://www.band.us/band/92458697/post"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
-          >
-            {t.band}
-          </a>
-        </nav>
-
-        <button
-          ref={buttonRef}
-          className="lg:hidden p-2 relative z-50"
-          onClick={() => setIsMenuOpen((s) => !s)}
-          aria-label="menu"
-          aria-expanded={isMenuOpen}
-        >
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-          </svg>
-        </button>
+  <div className="max-w-7xl mx-auto px-6 h-32 lg:h-32 md:h-28 sm:h-24 flex items-center justify-between">
+    <Link href="/" className="flex items-center gap-2">
+      <div className="relative w-96 lg:w-96 md:w-72 sm:w-56 h-24 lg:h-24 md:h-20 sm:h-16 flex-shrink-0">
+        <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
       </div>
+    </Link>
 
-      {/* 배경 오버레이 - 메뉴 클릭 시 닫기 */}
-      {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )}
+    <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center">
+      <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
+      <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
+      <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
 
-      {/* 메뉴 - 오버레이로 위에 떠있음 */}
-      {isMenuOpen && (
-        <div
-          ref={menuRef}
-          className="fixed top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
-        >
-          <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-          <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
-          <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
-          <hr />
-          <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
-            {t.band} →
-          </a>
-        </div>
-      )}
-    </header>
+      <a
+        href="https://www.band.us/band/92458697/post"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-xs bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
+      >
+        {t.band}
+      </a>
+    </nav>
+
+    <button
+      ref={buttonRef}
+      className="lg:hidden p-2 relative z-50"
+      onClick={() => setIsMenuOpen((s) => !s)}
+      aria-label="menu"
+      aria-expanded={isMenuOpen}
+    >
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+      </svg>
+    </button>
+  </div>
+
+  {isMenuOpen && (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
+      onClick={() => setIsMenuOpen(false)}
+    />
+  )}
+
+  {isMenuOpen && (
+    <div
+      ref={menuRef}
+      className="fixed top-24 sm:top-28 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
+    >
+      <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
+      <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
+      <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+      <hr />
+      <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
+        {t.band} →
+      </a>
+    </div>
+  )}
+</header>
+
   )
 }

@@ -53,64 +53,62 @@ export default function Header() {
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
   <div className="max-w-7xl mx-auto px-2 sm:px-6 h-24 sm:h-32 lg:h-40 flex items-center justify-between gap-2">
+  <Link href="/" className="flex items-center flex-shrink-0">
+    <div className="relative w-64 sm:w-80 lg:w-96 h-20 sm:h-24 lg:h-28 flex-shrink-0">
+      <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
+    </div>
+  </Link>
 
-    <Link href="/" className="flex items-center flex-shrink-0">
-      <div className="relative w-84 sm:w-96 lg:w-[540px] h-24 sm:h-28 lg:h-36 flex-shrink-0">
-  <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
+  <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center ml-auto">
+    <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
+    <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
+    <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
+
+    <a
+      href="https://www.band.us/band/92458697/post"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-xs bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
+    >
+      {t.band}
+    </a>
+  </nav>
+
+  <button
+    ref={buttonRef}
+    className="lg:hidden p-2 relative z-50 flex-shrink-0"
+    onClick={() => setIsMenuOpen((s) => !s)}
+    aria-label="menu"
+    aria-expanded={isMenuOpen}
+  >
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+    </svg>
+  </button>
 </div>
 
-    </Link>
+{isMenuOpen && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
+    onClick={() => setIsMenuOpen(false)}
+  />
+)}
 
-    <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center ml-auto">
-      <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
-      <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
-      <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
-
-      <a
-        href="https://www.band.us/band/92458697/post"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-xs bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors"
-      >
-        {t.band}
-      </a>
-    </nav>
-
-    <button
-      ref={buttonRef}
-      className="lg:hidden p-2 relative z-50 flex-shrink-0"
-      onClick={() => setIsMenuOpen((s) => !s)}
-      aria-label="menu"
-      aria-expanded={isMenuOpen}
-    >
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-      </svg>
-    </button>
+{isMenuOpen && (
+  <div
+    ref={menuRef}
+    className="fixed top-24 sm:top-32 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
+  >
+    <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
+    <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
+    <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
+    <hr />
+    <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
+      {t.band} →
+    </a>
   </div>
+)}
 
-  {isMenuOpen && (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-40"
-      onClick={() => setIsMenuOpen(false)}
-    />
-  )}
-
-  {isMenuOpen && (
-    <div
-      ref={menuRef}
-      className="fixed top-24 sm:top-32 left-0 right-0 bg-white lg:hidden flex flex-col gap-6 font-bold z-50 px-6 py-8 border-t border-gray-100"
-
-    >
-      <Link href="#about" onClick={() => setIsMenuOpen(false)}>{t.about}</Link>
-      <Link href="#classes" onClick={() => setIsMenuOpen(false)}>{t.classes}</Link>
-      <Link href="#contact" onClick={() => setIsMenuOpen(false)}>{t.contact}</Link>
-      <hr />
-      <a href="https://www.band.us/band/92458697/post" target="_blank" rel="noopener noreferrer" className="text-green-600">
-        {t.band} →
-      </a>
-    </div>
-  )}
 </header>
 
 

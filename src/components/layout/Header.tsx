@@ -52,14 +52,14 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 sm:h-28 lg:h-32 flex items-center justify-between">
-    <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-      <div className="relative w-48 sm:w-64 lg:w-96 h-14 sm:h-20 lg:h-24 flex-shrink-0">
+  <div className="max-w-7xl mx-auto px-2 sm:px-6 h-20 sm:h-28 lg:h-32 flex items-center justify-between gap-2">
+    <Link href="/" className="flex items-center flex-shrink-0">
+      <div className="relative w-56 sm:w-64 lg:w-96 h-16 sm:h-20 lg:h-24 flex-shrink-0">
         <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
       </div>
     </Link>
 
-    <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center">
+    <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center ml-auto">
       <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>
       <Link href="#classes" className="hover:text-black transition-colors">{t.classes}</Link>
       <Link href="#contact" className="hover:text-black transition-colors">{t.contact}</Link>
@@ -76,7 +76,7 @@ export default function Header() {
 
     <button
       ref={buttonRef}
-      className="lg:hidden p-2 relative z-50"
+      className="lg:hidden p-2 relative z-50 flex-shrink-0"
       onClick={() => setIsMenuOpen((s) => !s)}
       aria-label="menu"
       aria-expanded={isMenuOpen}
@@ -109,6 +109,7 @@ export default function Header() {
     </div>
   )}
 </header>
+
 
 
   )

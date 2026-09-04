@@ -53,16 +53,15 @@ export default function Header() {
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-4">
-          <div className="relative w-48 h-16 flex-shrink-0">
-  <Image src="/logo.png" alt="산위의 학교" fill className="object-contain object-left" priority />
-</div>
+        <Link href="/" className="flex items-center gap-2">
+  <div className="relative w-20 h-20 flex-shrink-0">
+    <Image src="/logo.png" alt="산위의 학교 로고" fill className="object-contain" priority />
+  </div>
+  <div className="relative w-48 h-16 flex-shrink-0">
+    <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
+  </div>
+</Link>
 
-          <div className="h-12 w-[1px] bg-gray-200" />
-          <div className="relative w-48 h-16 flex-shrink-0">
-            <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
-          </div>
-        </Link>
 
         <nav className="hidden lg:flex gap-10 text-sm font-bold text-gray-500 uppercase tracking-widest items-center">
           <Link href="#about" className="hover:text-black transition-colors">{t.about}</Link>

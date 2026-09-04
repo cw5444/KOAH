@@ -54,9 +54,10 @@ export default function Header() {
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-4">
-          <div className="relative w-20 h-20 flex-shrink-0">
-            <Image src="/logo.png" alt="산위의 학교 로고" fill className="object-contain" priority />
-          </div>
+          <div className="relative w-48 h-16 flex-shrink-0">
+  <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
+</div>
+
           <div className="h-12 w-[1px] bg-gray-200" />
           <div className="relative w-48 h-16 flex-shrink-0">
             <Image src="/logo_text.png" alt="산위의 학교" fill className="object-contain object-left" priority />
